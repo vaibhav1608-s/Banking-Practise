@@ -5,10 +5,12 @@ FROM python:3.11-slim
 WORKDIR /myapp
 
 #copy all the file from my current directory
-COPY . . 
+COPY requirements.txt . 
 
 #how to run the files which were copied , -r means read ,--no-cache-dir -> install them but dont store on local macheine
 RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
 
 EXPOSE 8000
 
