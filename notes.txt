@@ -1,0 +1,28 @@
+User logs in → auth code → token → protected API → balance
+
+User clicks “Check Balance” on Paytm (TPP) app
+Paytm redirects user to SBI -> client_id (Paytm), scope (balance), redirect_uri
+SBI authenticates user-> User logs in using SBI username & password
+SBI issues Authorization Code-> SBI redirects browser back to Paytm
+        https://paytm.com/callback?code=AUTH_CODE
+Paytm exchanges auth code for token -> This will happen in backend 
+        Paytm backend calls Apigee /token
+        Apigee issues Access Token-> Apigee validates auth code-> Deletes auth code (one-time use)
+                -> Generates:access_token
+
+Paytm calls protected API : /balance
+        Sends header:Authorization: Bearer ACCESS_TOKEN
+
+
+ app/
+│
+├── main.py              # App entry point
+│
+├── models.py            # BaseModel classes
+│
+├── storage.py           # In-memory storage (AUTH_CODES, TOKENS)
+│
+└── apis/
+    ├── authorize.py     # /authorize endpoint
+    ├── token.py         # /token endpoint
+    └── balance.py       # /balance endpoint
