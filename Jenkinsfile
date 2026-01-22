@@ -5,7 +5,6 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                echo 'Code Checked Out'
                 checkout scm
             }
         }
@@ -15,28 +14,19 @@ pipeline {
                 echo 'Skipping tests for now'
             }
         }
-        stage('Check Docker') {
-            steps {
-                sh 'which docker'
-                 sh 'docker --version'
-             }
-        }
-
 
         stage('Build Docker Image') {
             steps {
-                echo 'Building Docker image'
-                sh 'docker build -t fastapi-jwt .'
+                sh '/usr/local/bin/docker build -t fastapi-jwt .'
             }
         }
 
         stage('Run Docker Container') {
             steps {
-                echo 'Running Docker container'
                 sh '''
-                docker stop fastapi-jwt-container || true
-                docker rm fastapi-jwt-container || true
-                docker run -d -p 8000:8000 --name fastapi-jwt-container fastapi-jwt
+                /usr/local/bin/docker stop fastapi-jwt-container || true
+                /usr/local/bin/docker rm fastapi-jwt-container || true
+                /usr/local/bin/docker run -d -p 8000:8000 --name fastapi-jwt-container fastapi-jwt
                 '''
             }
         }
