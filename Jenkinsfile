@@ -15,6 +15,13 @@ pipeline {
                 echo 'Skipping tests for now'
             }
         }
+        stage('Check Docker') {
+            steps {
+                sh 'which docker'
+                 sh 'docker --version'
+             }
+        }
+
 
         stage('Build Docker Image') {
             steps {
