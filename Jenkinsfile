@@ -1,7 +1,20 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_CONFIG = "${WORKSPACE}/.docker"
+    }
+
     stages {
+
+        stage('Prepare Docker Config') {
+            steps {
+                sh '''
+                mkdir -p $DOCKER_CONFIG
+                echo '{}' > $DOCKER_CONFIG/config.json
+                '''
+            }
+        }
 
         stage('Checkout Code') {
             steps {
